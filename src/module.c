@@ -4486,7 +4486,7 @@ int ValkeyModule_OnLoad(ValkeyModuleCtx *ctx, ValkeyModuleString **argv, int arg
     // Always subscribe to failure events by default.
     // Only subscribe to success events when command_result_mode=all to avoid
     // server-side overhead of preparing event data for every successful command.
-    // Changing command_result_mode requires a module reload to take full effect.
+    // Changing command_result_mode from failures to all requires the module reloaded to take full effect.
     if (ValkeyModule_SubscribeToServerEvent(ctx,
         ValkeyModuleEvent_CommandResultFailure, commandResultCallback) == VALKEYMODULE_ERR) {
         ValkeyModule_Log(ctx, "warning",
