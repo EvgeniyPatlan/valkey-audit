@@ -4483,7 +4483,7 @@ int ValkeyModule_OnLoad(ValkeyModuleCtx *ctx, ValkeyModuleString **argv, int arg
     }
 
     // Subscribe to command result events (requires Valkey server with commandresult API)
-    // Always subscribe to failure events.
+    // Always subscribe to failure events by default.
     // Only subscribe to success events when command_result_mode=all to avoid
     // server-side overhead of preparing event data for every successful command.
     // Changing command_result_mode requires a module reload to take full effect.
