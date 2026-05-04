@@ -3012,7 +3012,8 @@ int setAuditCommandResultMode(const char *name, ValkeyModuleString *new_val, voi
         return VALKEYMODULE_OK;
     }
 
-    *err = ValkeyModule_CreateString(NULL, "Invalid command_result_mode. Use 'all' or 'failures'. Requires module reload to take full effect.", 97);
+    static const char err_msg[] = "Invalid command_result_mode. Use 'all' or 'failures'. Requires module reload to take full effect.";
+    *err = ValkeyModule_CreateString(NULL, err_msg, sizeof(err_msg) - 1);
     return VALKEYMODULE_ERR;
 }
 
@@ -3493,12 +3494,11 @@ void authenticationAttemptCallback(ValkeyModuleCtx *ctx, ValkeyModuleEvent eid,
 
     // Look up stored client info for IP and port
     ClientUsernameEntry *entry = getClientEntry(info->client_id);
+    if (entry && entry->no_audit) return;
+
     const char *ip_address = entry ? entry->ip_address : "unknown";
     int client_port = entry ? entry->client_port : 0;
     const char *username = info->username ? info->username : "unknown";
-
-    // Check exclusion
-    if (entry && entry->no_audit) return;
 
     int flag;
 
@@ -3506,7 +3506,9 @@ void authenticationAttemptCallback(ValkeyModuleCtx *ctx, ValkeyModuleEvent eid,
         flag = EVENT_SUCCESS;
     } else {
         flag = EVENT_FAILURE;
-        // Update stored username in case it changed (e.g. wrong user attempted)
+        /* Persist the attempted username into the global client table so that
+         * subsequent log entries for this connection reflect the name used in
+         * this failed AUTH, not a stale value from before the attempt. */
         if (entry && info->username) {
             if (entry->username) ValkeyModule_Free(entry->username);
             entry->username = ValkeyModule_Strdup(info->username);
