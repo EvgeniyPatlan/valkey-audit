@@ -3,7 +3,7 @@ Section: database
 Priority: optional
 Maintainer: Martin Visser <martinrvisser@gmail.com>
 Build-Depends: debhelper (>= 10), cmake (>= 3.10), gcc, g++, make, git,
- percona-valkey-server-dev
+ percona-valkey-dev
 Standards-Version: 4.1.4
 Homepage: https://github.com/martinrvisser/valkey-audit
 

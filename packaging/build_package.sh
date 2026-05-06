@@ -283,7 +283,7 @@ install_deps_rpm() {
         percona-release enable valkey-91 experimental
 
         log_info "Installing Percona Valkey development headers..."
-        $pkg_mgr install -y percona-valkey-server-devel
+        $pkg_mgr install -y percona-valkey-devel
 
         $pkg_mgr clean all
     fi
@@ -311,7 +311,7 @@ install_deps_deb() {
     apt-get update
 
     log_info "Installing Percona Valkey development headers..."
-    DEBIAN_FRONTEND=noninteractive apt-get -y install percona-valkey-server-dev
+    DEBIAN_FRONTEND=noninteractive apt-get -y install percona-valkey-dev
 }
 
 # ===========================================================================

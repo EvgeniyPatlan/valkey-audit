@@ -13,7 +13,7 @@ BuildRequires:  gcc-c++
 BuildRequires:  make
 BuildRequires:  git
 # valkeymodule.h — provided by Percona Valkey 9.1 experimental repo
-BuildRequires:  percona-valkey-server-devel
+BuildRequires:  percona-valkey-devel
 
 Requires:       percona-valkey-server
 Provides:       valkey-audit = %{version}-%{release}
