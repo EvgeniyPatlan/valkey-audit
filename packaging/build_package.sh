@@ -524,14 +524,18 @@ build_source_deb() {
     rm -rf changelog
     {
         echo "${PACKAGE_NAME} (${VERSION}-${RELEASE}) unstable; urgency=low"
+        echo ""
         echo "  * Initial Release."
-        echo " -- Martin Visser <martinrvisser@gmail.com> $(date -R)"
+        echo ""
+        echo " -- Percona Build/Release Team <info@percona.com>  $(date -R)"
     } > changelog
     cd ..
 
+    # -d: skip dpkg-checkbuilddeps for source-only builds; the binary builder
+    # will satisfy Build-Depends from the .dsc later.
     dch -D unstable --force-distribution -v "${VERSION}-${RELEASE}" \
         "Update to new ${PACKAGE_NAME} version ${VERSION}"
-    dpkg-buildpackage -S
+    dpkg-buildpackage -S -d
 
     cd ..
 
