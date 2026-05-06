@@ -12,7 +12,7 @@ readonly PRODUCT="valkey-audit"
 readonly PACKAGE_NAME="percona-valkey-audit"
 readonly DEFAULT_VERSION="0.2.2"
 readonly DEFAULT_RELEASE="1"
-readonly DEFAULT_BRANCH="packaging-vk91mods"
+readonly DEFAULT_BRANCH="packaging-vk91mods-v2"
 readonly DEFAULT_REPO="https://github.com/EvgeniyPatlan/valkey-audit.git"
 
 # Absolute path to the directory containing this script
