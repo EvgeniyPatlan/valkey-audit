@@ -77,5 +77,8 @@ install(TARGETS valkeyaudit
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-enable_testing()
-add_subdirectory(test)
+option(BUILD_TESTING "Build tests" ON)
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(test)
+endif()
