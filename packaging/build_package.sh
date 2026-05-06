@@ -271,7 +271,19 @@ install_deps_rpm() {
 
         log_info "Installing RPM build dependencies..."
         $pkg_mgr install -y \
-            rpm-build rpmdevtools gcc gcc-c++ make cmake git tar gzip
+            rpm-build rpmdevtools gcc gcc-c++ make cmake git tar gzip wget
+
+        # Percona Valkey 9.1 experimental repo (provides valkeymodule.h)
+        if ! rpm -q percona-release &>/dev/null; then
+            log_info "Installing percona-release..."
+            $pkg_mgr install -y \
+                https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+        fi
+        log_info "Enabling Percona Valkey 9.1 experimental repository..."
+        percona-release enable valkey-91 experimental
+
+        log_info "Installing Percona Valkey development headers..."
+        $pkg_mgr install -y percona-valkey-server-devel
 
         $pkg_mgr clean all
     fi
@@ -284,7 +296,22 @@ install_deps_deb() {
     DEBIAN_FRONTEND=noninteractive apt-get -y install \
         build-essential debhelper devscripts dpkg-dev \
         fakeroot ca-certificates lsb-release \
-        git wget curl tar gzip make gcc cmake
+        git wget curl tar gzip make gcc cmake gnupg
+
+    # Percona Valkey 9.1 experimental repo (provides valkeymodule.h)
+    if ! dpkg -l percona-release &>/dev/null; then
+        log_info "Installing percona-release..."
+        wget -O /tmp/percona-release.deb \
+            https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+        DEBIAN_FRONTEND=noninteractive apt-get -y install /tmp/percona-release.deb
+        rm -f /tmp/percona-release.deb
+    fi
+    log_info "Enabling Percona Valkey 9.1 experimental repository..."
+    percona-release enable valkey-91 experimental
+    apt-get update
+
+    log_info "Installing Percona Valkey development headers..."
+    DEBIAN_FRONTEND=noninteractive apt-get -y install percona-valkey-server-dev
 }
 
 # ===========================================================================
