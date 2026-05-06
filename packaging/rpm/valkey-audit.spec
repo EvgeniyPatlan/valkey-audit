@@ -46,7 +46,7 @@ install -D -m 0644 packaging/valkey-audit.conf \
 %config(noreplace) %{_sysconfdir}/valkey/valkey.conf.d/valkey-audit.conf
 
 %changelog
-* Mon Mar 03 2026 Evgeniy Patlan <evgeniy.patlan@percona.com> - 0.2.2-1
+* Tue Mar 03 2026 Evgeniy Patlan <evgeniy.patlan@percona.com> - 0.2.2-1
 - Initial RPM packaging
 - Audit logging module for Valkey with file/syslog/TCP output
 - Supports text, JSON, and CSV log formats
