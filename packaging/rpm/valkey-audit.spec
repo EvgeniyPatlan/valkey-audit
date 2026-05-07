@@ -15,7 +15,7 @@ BuildRequires:  git
 # valkeymodule.h — provided by Percona Valkey 9.1 experimental repo
 BuildRequires:  percona-valkey-devel
 
-Requires:       percona-valkey-server
+Requires:       percona-valkey
 Provides:       valkey-audit = %{version}-%{release}
 Obsoletes:      valkey-audit < %{version}-%{release}
 Conflicts:      valkey-audit < %{version}-%{release}
