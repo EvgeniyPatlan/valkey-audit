@@ -23,8 +23,10 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # Separate package so this never collides with a future full-runtime image.
-  IMAGE_NAME: ${{ github.repository }}/module
+  # IMAGE_NAME is computed per-job (see "Normalize image name" steps): GHCR
+  # requires an all-lowercase repository path, but ${{ github.repository }} can
+  # contain uppercase owner/repo characters, which workflow-level `env:` cannot
+  # lowercase. The suffix /module keeps this separate from a future full-runtime image.
   VALKEY_VERSION: ${{ github.event.inputs.valkey_version || '9.1.0' }}
 
 jobs:
@@ -42,10 +44,10 @@ jobs:
     permissions:
       contents: read
       packages: write
-    outputs:
-      # not used directly; digests are passed via artifacts below
-      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
     steps:
+      - name: Normalize image name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}/module" >> "$GITHUB_ENV"
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -95,6 +97,9 @@ jobs:
       id-token: write        # cosign keyless
       attestations: write     # GitHub build provenance
     steps:
+      - name: Normalize image name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}/module" >> "$GITHUB_ENV"
+
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
