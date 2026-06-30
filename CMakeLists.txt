@@ -14,7 +14,10 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-set(CMAKE_C_STANDARD 17)
+# Use C11 instead of C17: C17 == C11 + defect fixes, and CMake < 3.21 (Oracle
+# Linux 8 ships 3.20, Debian bullseye 3.18) cannot enable the C17 dialect and
+# fails configure with "CMake does not know the compile flags to use".
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
@@ -77,7 +80,7 @@ set_target_properties(valkeyaudit PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR}
     COMPILE_WARNING_AS_ERROR ON
-    C_STANDARD 17
+    C_STANDARD 11
     POSITION_INDEPENDENT_CODE ON
 )
 
